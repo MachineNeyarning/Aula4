@@ -131,3 +131,44 @@ df.groupby(['color', 'clarity']).agg(
     min_price=('price', 'min'),
     max_price=('price', 'max')
 ).sort_values(by='max_price', ascending=False)
+
+
+
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+# Get the aggregated data
+agg_data = df.groupby(['color', 'clarity']).agg(
+    mean_price=('price', 'mean'),
+    median_price=('price', 'median'),
+    min_price=('price', 'min'),
+    max_price=('price', 'max')
+)
+
+# You can choose which price statistic to visualize on the heatmap.
+# Let's start with the mean price.
+mean_price_pivot = agg_data['mean_price'].unstack()
+
+# Create the heatmap
+plt.figure(figsize=(10, 6))
+sns.heatmap(mean_price_pivot, annot=True, fmt=".0f", cmap="YlGnBu")
+plt.title('Mean Diamond Price by Color and Clarity')
+plt.xlabel('Clarity')
+plt.ylabel('Color')
+plt.show()
+
+plt.figure(figsize=(12, 6))
+sns.boxplot(x='color', y='price', hue='clarity', data=df)
+plt.title('Distribution of Diamond Prices by Color and Clarity')
+plt.xlabel('Color')
+plt.ylabel('Price')
+plt.show()
+
+plt.figure(figsize=(15, 8))
+# Using the custom color palette might make the plot less readable due to the number of clarity levels.
+# Therefore, we will use the default seaborn palette for better visual separation.
+sns.boxplot(x='color', y='price', hue='clarity', data=df)
+plt.title('Distribution of Diamond Prices by Color and Clarity')
+plt.xlabel('Color')
+plt.ylabel('Price')
+plt.show()
